@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur10e_robotiq">
+
+	<!-- This xacro file combines the UR10e URDF and the Robotiq 2F-85 gripper URDF. -->
+
+    <!-- Set controllers for simulations (Fake Hardware, Gazebo, Ignition) -->
+    <xacro:arg name="controllers_config_file" default="$(find ur10e_description)/config/ur10e_robotiq_controllers.yaml" />   
+
+    <!-- Include macros for the ur10e and the Robotiq 2f-85 gripper -->
+    <xacro:include filename="$(find ur10e_description)/urdf/ur10e_urdf.xacro" />
+    <xacro:include filename="$(find ur10e_description)/urdf/robotiq_2f_85_urdf.xacro" />
+
+</robot>

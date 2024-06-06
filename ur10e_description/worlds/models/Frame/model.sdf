@@ -1,0 +1,28 @@
+<?xml version='1.0' ?>
+<sdf version='1.6'>
+  <model name='Frame'>
+    <static>true</static>
+    <link name='link'>
+      <pose>0 0 0 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>meshes/Frame.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>meshes/Frame.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>1 1 1 1</specular>
+          </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
