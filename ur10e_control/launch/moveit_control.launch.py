@@ -93,7 +93,14 @@ def generate_launch_description():
         output='log',
         name='rviz2',
         arguments=['-d', rviz_config_file],
-        parameters=[{'use_sim_time': True}],
+        parameters=[
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+            moveit_config.planning_pipelines,
+            moveit_config.joint_limits,
+            {'use_sim_time': True}
+        ],
     )
 
     robot_name = 'ur10e'
