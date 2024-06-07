@@ -7,13 +7,13 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
-    moveit_config = MoveItConfigsBuilder("ur10e", package_name="ur10e_control").to_moveit_configs()
+    moveit_config = MoveItConfigsBuilder("ur10e_robotiq", package_name="ur10e_moveit_config").to_moveit_configs()
 
     # MoveItCpp demo executable
     moveit_cpp_node = Node(
-        name="draw_x",
-        package="my_moveit_config",
-        executable="draw_x",
+        name="coord_control",
+        package="ur10e_control",
+        executable="coord_control",
         output="screen",
         parameters=[
             moveit_config.robot_description,
