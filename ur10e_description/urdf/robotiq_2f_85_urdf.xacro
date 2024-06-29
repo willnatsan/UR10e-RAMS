@@ -12,7 +12,7 @@
         prefix
         parent
         *origin
-        sim_ignition:=false
+        sim_ignition:=true
         sim_isaac:=false
         use_fake_hardware:=false
         fake_sensor_commands:=false

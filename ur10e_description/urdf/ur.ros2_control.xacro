@@ -5,7 +5,7 @@
     name
     use_fake_hardware:=false fake_sensor_commands:=false
     sim_gazebo:=false
-    sim_ignition:=false
+    sim_ignition:=true
     headless_mode:=false
     initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=0,elbow_joint=0.0,wrist_1_joint=0,wrist_2_joint=0.0,wrist_3_joint=0.0)}
     use_tool_communication:=false

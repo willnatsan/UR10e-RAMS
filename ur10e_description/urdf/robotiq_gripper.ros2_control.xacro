@@ -4,7 +4,7 @@
     <xacro:macro name="robotiq_gripper_ros2_control" params="
         name
         prefix
-        sim_ignition:=false
+        sim_ignition:=true
         sim_isaac:=false
         use_fake_hardware:=false
         fake_sensor_commands:=false

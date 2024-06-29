@@ -4,13 +4,15 @@
   <name>ur10e</name>
   <version>0.0.0</version>
   <description>Package for the UR10e within the RAMS Lab (Metapackage)</description>
-  <maintainer email="sannatwill@gmail.com">willnatsan</maintainer>
+  <maintainer email="wnsantoso1@sheffield.ac.uk">willnatsan</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>ur10e_description</exec_depend>
   <exec_depend>ur10e_sim</exec_depend>
+  <exec_depend>ur10e_moveit_config</exec_depend>
+  <exec_depend>ur10e_control</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

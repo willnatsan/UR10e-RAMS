@@ -1,21 +1,29 @@
-import xacro
 from os.path import join
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, RegisterEventHandler, AppendEnvironmentVariable
+from launch.actions import (
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+    AppendEnvironmentVariable,
+)
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 
+
 def generate_launch_description():
     # MoveIt! Configuration
     moveit_config = (
         MoveItConfigsBuilder("ur10e")
-        .robot_description(file_path="/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/urdf/ur10e_robotiq_2f_85.urdf")
+        .robot_description(
+            file_path="config/ur10e_robotiq.urdf.xacro",
+        )
         .robot_description_semantic(file_path="config/ur10e_robotiq.srdf")
         .robot_description_kinematics(file_path="config/kinematics.yaml")
-        .planning_scene_monitor(publish_robot_description=True, publish_robot_description_semantic=True)
+        .planning_scene_monitor(
+            publish_robot_description=True, publish_robot_description_semantic=True
+        )
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(pipelines=["ompl"])
         .to_moveit_configs()
@@ -31,34 +39,32 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "info"],
     )
 
-
     # Configure URDF file
-    urdf_pkg_share = get_package_share_directory('ur10e_description')
-    urdf_path_local = 'urdf/ur10e_robotiq_2f_85.urdf.xacro'
-    urdf_path_global = join(urdf_pkg_share, urdf_path_local)
-    robot_description_raw = xacro.process_file(urdf_path_global).toxml()
+    urdf_pkg_share = get_package_share_directory("ur10e_description")
 
-    world_path = '/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/A23.sdf'
+    world_path = (
+        "/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/A23.sdf"
+    )
 
-    # Launch Gazebo 
-    gz_pkg_share = get_package_share_directory('ros_gz_sim')
+    # Launch Gazebo
+    gz_pkg_share = get_package_share_directory("ros_gz_sim")
 
     set_env_vars_resources = AppendEnvironmentVariable(
-            'GZ_SIM_RESOURCE_PATH',
-            join('/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/'))
+        "GZ_SIM_RESOURCE_PATH",
+        join("/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/"),
+    )
 
     gzserver_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            join(gz_pkg_share, 'launch', 'gz_sim.launch.py')
-        ),
-        launch_arguments={'gz_args': ['-s -v4 ', world_path], 'on_exit_shutdown': 'true'}.items()
+        PythonLaunchDescriptionSource(join(gz_pkg_share, "launch", "gz_sim.launch.py")),
+        launch_arguments={
+            "gz_args": ["-s -v4 ", world_path],
+            "on_exit_shutdown": "true",
+        }.items(),
     )
 
     gzclient_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            join(gz_pkg_share, 'launch', 'gz_sim.launch.py')
-        ),
-        launch_arguments={'gz_args': '-g -v4 '}.items()
+        PythonLaunchDescriptionSource(join(gz_pkg_share, "launch", "gz_sim.launch.py")),
+        launch_arguments={"gz_args": "-g -v4 "}.items(),
     )
 
     spawn_x = "1.655"
@@ -72,73 +78,94 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=[spawn_x, spawn_y, spawn_z, spawn_yaw, "0.0", "0.0", "world", "ur10e_base_link"],
-    )
-    
-    rsp_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        parameters=[
-            {'robot_description': robot_description_raw, 
-             'use_sim_time': True}
+        arguments=[
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0",
+            "world",
+            "ur10e_base_link",
         ],
-        output='both',
     )
 
-    rviz_config_file = join(urdf_pkg_share, 'rviz', 'view_robot.rviz')
-    
+    rsp_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        parameters=[moveit_config.robot_description],
+        output="both",
+    )
+
+    rviz_config_file = join(urdf_pkg_share, "rviz", "view_robot.rviz")
+
     rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        output='log',
-        name='rviz2',
-        arguments=['-d', rviz_config_file],
+        package="rviz2",
+        executable="rviz2",
+        output="log",
+        name="rviz2",
+        arguments=["-d", rviz_config_file],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.robot_description_kinematics,
             moveit_config.planning_pipelines,
             moveit_config.joint_limits,
-            {'use_sim_time': True}
         ],
     )
 
-    robot_name = 'ur10e'
+    robot_name = "ur10e"
 
     create_node = Node(
-        package='ros_gz_sim',
-        executable='create',
+        package="ros_gz_sim",
+        executable="create",
         arguments=[
-            '-topic', 'robot_description', 
-            '-name', robot_name,
-            # '-world', world_path,
-            '-x', spawn_x,
-            '-y', spawn_y,
-            '-z', spawn_z,
-            '-Y', spawn_yaw,
+            "-topic",
+            "robot_description",
+            "-name",
+            robot_name,
+            "-x",
+            spawn_x,
+            "-y",
+            spawn_y,
+            "-z",
+            spawn_z,
+            "-Y",
+            spawn_yaw,
         ],
-        parameters=[{'use_sim_time': True}],
-        output='screen',
+        output="screen",
     )
 
-    # Spawn controller nodes 
+    # Spawn controller nodes
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     joint_trajectory_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "joint_trajectory_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     robotiq_gripper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["robotiq_gripper_controller", "--controller-manager", "/controller_manager"],
+        arguments=[
+            "robotiq_gripper_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     delay_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -151,20 +178,24 @@ def generate_launch_description():
     delay_joint_trajectory_controller_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
-            on_exit=[joint_trajectory_controller_spawner, robotiq_gripper_controller_spawner],
+            on_exit=[
+                joint_trajectory_controller_spawner,
+                robotiq_gripper_controller_spawner,
+            ],
         )
     )
 
-    return LaunchDescription([
-        move_group_node,
-        static_tf_node,
-        rsp_node,
-        rviz_node,
-        set_env_vars_resources,
-        gzserver_cmd,
-        gzclient_cmd,
-        create_node,
-        delay_joint_state_broadcaster_spawner,
-        delay_joint_trajectory_controller_spawner,
-        
-    ])
+    return LaunchDescription(
+        [
+            move_group_node,
+            static_tf_node,
+            rsp_node,
+            rviz_node,
+            set_env_vars_resources,
+            gzserver_cmd,
+            gzclient_cmd,
+            create_node,
+            delay_joint_state_broadcaster_spawner,
+            delay_joint_trajectory_controller_spawner,
+        ]
+    )

@@ -9,6 +9,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ur10e_description REQUIRED)
 find_package(ur10e_sim REQUIRED)
+find_package(ur10e_control REQUIRED)
+find_package(ur10e_moveit_config REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

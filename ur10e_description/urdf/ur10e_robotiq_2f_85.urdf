@@ -165,8 +165,60 @@
       <state_interface name="effort"/>
     </joint>
   </ros2_control>
-  <!-- Add URDF transmission elements (for ros_control) -->
-  <!--<xacro:ur_arm_transmission prefix="${prefix}" hw_interface="${transmission_hw_interface}" />-->
+  <transmission name="ur10e_shoulder_pan_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_shoulder_pan_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_shoulder_pan_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="ur10e_shoulder_lift_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_shoulder_lift_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_shoulder_lift_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="ur10e_elbow_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_elbow_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_elbow_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="ur10e_wrist_1_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_wrist_1_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_wrist_1_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="ur10e_wrist_2_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_wrist_2_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_wrist_2_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="ur10e_wrist_3_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ur10e_wrist_3_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ur10e_wrist_3_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <!-- Placeholder for ros2_control transmission which don't yet exist -->
   <!-- links -  main serial chain -->
   <link name="ur10e_base_link"/>
