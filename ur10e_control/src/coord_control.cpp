@@ -43,21 +43,25 @@ int main(int argc, char **argv) {
   target_pose1.orientation.y = 0.00;
   target_pose1.orientation.z = 0.00;
   target_pose1.orientation.w = 0.00;
-  //   target_pose1.position.x = 0.343;
-  //   target_pose1.position.y = 0.132;
-  //   target_pose1.position.z = 0.264;
+  // target_pose1.position.x = 0.343;
+  // target_pose1.position.y = 0.132;
+  // target_pose1.position.z = 0.264;
   target_pose1.position.x = 0.5;
-  target_pose1.position.y = 0.132;
-  target_pose1.position.z = 0.5;
+  target_pose1.position.y = 0.7;
+  target_pose1.position.z = 0.3;
 
   move_group_arm.setPoseTarget(target_pose1);
 
   moveit::planning_interface::MoveGroupInterface::Plan my_plan_arm;
-  //   bool success_arm = (move_group_arm.plan(my_plan_arm) ==
-  //                       moveit::core::MoveItErrorCode::SUCCESS);
+  bool success_arm = (move_group_arm.plan(my_plan_arm) ==
+                      moveit::core::MoveItErrorCode::SUCCESS);
 
-  move_group_arm.execute(my_plan_arm);
-  RCLCPP_INFO(LOGGER, "Arm at Start");
+  if (success_arm) {
+    move_group_arm.execute(my_plan_arm);
+    RCLCPP_INFO(LOGGER, "Arm at Start");
+  } else {
+    RCLCPP_ERROR(LOGGER, "Planning failed!");
+  }
 
   // X motion
 
@@ -65,16 +69,16 @@ int main(int argc, char **argv) {
 
   std::vector<geometry_msgs::msg::Pose> waypoints;
 
-  target_pose1.position.x += 0.983;
-  target_pose1.position.y -= -0.065;
-  waypoints.push_back(target_pose1);
+  //   target_pose1.position.x += 0.983;
+  //   target_pose1.position.y += -0.065;
+  //   waypoints.push_back(target_pose1);
 
   //   target_pose1.position.y += 0.05;
   //   waypoints.push_back(target_pose1);
 
-  //   target_pose1.position.x -= 0.05;
-  //   target_pose1.position.y -= 0.05;
-  //   waypoints.push_back(target_pose1);
+  target_pose1.position.x -= 0.0;
+  target_pose1.position.y -= 0.0;
+  waypoints.push_back(target_pose1);
 
   //   target_pose1.position.y += 0.05;
   //   waypoints.push_back(target_pose1);
@@ -84,7 +88,7 @@ int main(int argc, char **argv) {
   //   const double eef_step = 0.01;
 
   //   double fraction = move_group_arm.computeCartesianPath(
-  //       waypoints, eef_step, jump_threshold, trajectory);
+  //   waypoints, eef_step, jump_threshold, trajectory);
 
   move_group_arm.execute(trajectory);
 

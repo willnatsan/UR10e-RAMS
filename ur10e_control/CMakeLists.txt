@@ -8,20 +8,22 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_visual_tools REQUIRED)
+find_package(moveit_task_constructor_core REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# add_executable(simple_control src/simple_control.cpp)
 add_executable(coord_control src/coord_control.cpp)
-# target_include_directories(simple_control PUBLIC
+
 target_include_directories(coord_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-# target_compile_features(simple_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
 target_compile_features(coord_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  # simple_control
   coord_control
   "moveit_ros_planning_interface"
+  "moveit_visual_tools"
+  "moveit_task_constructor_core"
   "rclcpp"
 )
 
@@ -30,7 +32,7 @@ install (
   DESTINATION share/${PROJECT_NAME}
 )
 
-# install(TARGETS simple_control
+# install(TARGETS coord_control
 install(TARGETS coord_control
   DESTINATION lib/${PROJECT_NAME})
 
