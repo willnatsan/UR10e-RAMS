@@ -46,7 +46,7 @@ install (
 
 install(TARGETS 
   coord_control
-  simple_control
+  simple_control 
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
