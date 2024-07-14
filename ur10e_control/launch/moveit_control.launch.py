@@ -72,28 +72,10 @@ def generate_launch_description():
     spawn_z = "0.85"
     spawn_yaw = "1.57"
 
-    # Configure nodes to launch
-    static_tf_node = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="static_transform_publisher",
-        output="log",
-        arguments=[
-            "0.0",
-            "0.0",
-            "0.0",
-            "0.0",
-            "0.0",
-            "0.0",
-            "world",
-            "ur10e_base_link",
-        ],
-    )
-
     rsp_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        parameters=[moveit_config.robot_description],
+        parameters=[moveit_config.robot_description, {"use_sim_time": True}],
         output="both",
     )
 
@@ -188,7 +170,6 @@ def generate_launch_description():
     return LaunchDescription(
         [
             move_group_node,
-            static_tf_node,
             rsp_node,
             rviz_node,
             set_env_vars_resources,

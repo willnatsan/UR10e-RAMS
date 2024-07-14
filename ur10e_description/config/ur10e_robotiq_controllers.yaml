@@ -1,6 +1,7 @@
 controller_manager:
   ros__parameters:
     update_rate: 1000  # Hz - Gazebo Sim Update Rate?
+    use_sim_time: true
 
     # UR Controllers
     joint_state_broadcaster:
