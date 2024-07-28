@@ -14,11 +14,15 @@ find_package(rclcpp REQUIRED)
 
 add_executable(coord_control src/coord_control.cpp)
 add_executable(simple_control src/simple_control.cpp)
+add_executable(task_constructor src/task_constructor.cpp)
 
 target_include_directories(coord_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_include_directories(simple_control PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>) 
+target_include_directories(task_constructor PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>) 
 
@@ -38,6 +42,14 @@ ament_target_dependencies(
   "moveit_task_constructor_core"
   "rclcpp"
 )
+target_compile_features(task_constructor PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  task_constructor
+  "moveit_ros_planning_interface"
+  "moveit_visual_tools"
+  "moveit_task_constructor_core"
+  "rclcpp"
+)
 
 install (
   DIRECTORY launch
@@ -47,6 +59,7 @@ install (
 install(TARGETS 
   coord_control
   simple_control 
+  task_constructor
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

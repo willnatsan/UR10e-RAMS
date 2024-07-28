@@ -12,14 +12,15 @@
 // All source files that use ROS logging should define a file-specific
 // static const rclcpp::Logger named LOGGER, located at the top of the file
 // and inside the namespace with the narrowest scope (if there is one)
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("coord_control_demo");
+static const rclcpp::Logger LOGGER =
+    rclcpp::get_logger("task_constructor_demo");
 
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
   rclcpp::NodeOptions node_options;
   node_options.automatically_declare_parameters_from_overrides(true);
   auto move_group_node =
-      rclcpp::Node::make_shared("coord_control", node_options);
+      rclcpp::Node::make_shared("task_constructor", node_options);
 
   // We spin up a SingleThreadedExecutor for the current state monitor to get
   // information about the robot's state.
@@ -72,7 +73,8 @@ int main(int argc, char **argv) {
   // cylinders, and spheres
   Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
   text_pose.translation().z() = 1.0;
-  visual_tools.publishText(text_pose, "CoordControl", rvt::WHITE, rvt::XLARGE);
+  visual_tools.publishText(text_pose, "Task Constructor", rvt::WHITE,
+                           rvt::XLARGE);
 
   // Batch publishing is used to reduce the number of messages being sent to
   // RViz for large visualizations
@@ -130,7 +132,7 @@ int main(int argc, char **argv) {
   RCLCPP_INFO(LOGGER, "Visualizing plan 1 as trajectory line");
   visual_tools.publishAxisLabeled(target_pose1, "pose1");
   visual_tools.publishText(text_pose, "Pose_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt(
       "Press 'next' in the RvizVisualToolsGui window to continue the demo");
@@ -190,7 +192,7 @@ int main(int argc, char **argv) {
   visual_tools.deleteAllMarkers();
   visual_tools.publishText(text_pose, "Joint_Space_Goal", rvt::WHITE,
                            rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt(
       "Press 'next' in the RvizVisualToolsGui window to continue the demo");
@@ -265,7 +267,7 @@ int main(int argc, char **argv) {
   visual_tools.publishAxisLabeled(target_pose1, "goal");
   visual_tools.publishText(text_pose, "Constrained_Goal", rvt::WHITE,
                            rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt(
       "Press 'next' in the RvizVisualToolsGui window to continue the demo");
@@ -353,7 +355,7 @@ int main(int argc, char **argv) {
   visual_tools.deleteAllMarkers();
   visual_tools.publishText(text_pose, "Clear_Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishAxisLabeled(another_pose, "goal");
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt(
       "Press 'next' in the RvizVisualToolsGui window to continue the demo");
@@ -411,7 +413,7 @@ int main(int argc, char **argv) {
   RCLCPP_INFO(LOGGER, "Visualizing plan 6 (pose goal move around cuboid) %s",
               success ? "" : "FAILED");
   visual_tools.publishText(text_pose, "Obstacle_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the "
                       "plan is complete");
@@ -477,7 +479,7 @@ int main(int argc, char **argv) {
   RCLCPP_INFO(LOGGER,
               "Visualizing plan 7 (move around cuboid with cylinder) %s",
               success ? "" : "FAILED");
-  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the "
                       "plan is complete");
