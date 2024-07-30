@@ -12,7 +12,12 @@
   <depend>moveit_ros_planning_interface</depend>
   <depend>moveit_visual_tools</depend>
   <depend>moveit_task_constructor_core</depend>
+  <depend>ros_gz_sim</depend>
   <depend>rclcpp</depend>
+  
+  <exec_depend>ur10e_moveit_config</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
