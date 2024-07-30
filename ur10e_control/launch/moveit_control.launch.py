@@ -157,7 +157,7 @@ def generate_launch_description():
         )
     )
 
-    delay_joint_trajectory_controller_spawner = RegisterEventHandler(
+    delay_controllers_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[
@@ -177,6 +177,6 @@ def generate_launch_description():
             gzclient_cmd,
             create_node,
             delay_joint_state_broadcaster_spawner,
-            delay_joint_trajectory_controller_spawner,
+            delay_controllers_spawner,
         ]
     )
