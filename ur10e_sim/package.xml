@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>Package w/ Simulations for the UR10e within the RAMS Lab</description>
   <maintainer email="wnsantoso1@sheffield.ac.uk">willnatsan</maintainer>
-  <license>TODO: License declaration</license>
+  <license>CC-BY-4.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
