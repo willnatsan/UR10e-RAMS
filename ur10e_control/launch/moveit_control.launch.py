@@ -42,8 +42,8 @@ def generate_launch_description():
     # Configure URDF file
     urdf_pkg_share = get_package_share_directory("ur10e_description")
 
-    world_path = (
-        "/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/A23.sdf"
+    world_path = join(
+        get_package_share_directory("ur10e_description"), "worlds", "A23.sdf"
     )
 
     # Launch Gazebo
@@ -51,7 +51,7 @@ def generate_launch_description():
 
     set_env_vars_resources = AppendEnvironmentVariable(
         "GZ_SIM_RESOURCE_PATH",
-        join("/home/willnatsan/ros2/ur_ws/src/ur10e/ur10e_description/worlds/"),
+        join(get_package_share_directory("ur10e_description"), "worlds"),
     )
 
     gzserver_cmd = IncludeLaunchDescription(
